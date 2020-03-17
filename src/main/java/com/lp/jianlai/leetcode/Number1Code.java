@@ -20,7 +20,7 @@ public class Number1Code {
         Map<Integer, Integer> map = new HashMap<>();
         for(int i=0; i<nums.length; i++){
             int subNum = target - nums[i];
-            if(map.get(subNum) == null){
+            if(!map.containsKey(subNum)){
                 map.put(nums[i], i);
             }else{
                 int mark = map.get(subNum);
