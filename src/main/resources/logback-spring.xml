@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <!-- 定义参数 -->
+    <property name="log.filePath" value="./"/>
+
+    <!-- 配置控制台日志 -->
+    <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>
+                [%thread] %d %level %X{device}%X{from}%X{requestId}%X{phone}%X{path}%X{pathSummary}-%class.%method:%line - %msg%n
+            </pattern>
+        </layout>
+        <!--<layout class="ch.qos.logback.classic.PatternLayout">-->
+            <!--<pattern>%date [%thread] %-5level %logger{50}:%L - %msg%n</pattern>-->
+        <!--</layout>-->
+    </appender>
+
+    <!-- 日志文件轮转配置 -->
+    <appender name="fileInfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${log.filePath}/logs/jianlai.log</File>
+        <encoder>
+            <pattern>
+                %date [%thread] %-5level %logger{50}:%L - %msg%n
+            </pattern>
+        </encoder>
+        <!-- 滚动策略，每天生成一个日志文件 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 路径 -->
+            <fileNamePattern>${log.filePath}/logs/jianlai/jianlai.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!--大小策略 超过200MB就分包-->
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- or whenever the file size reaches 100MB -->
+                <maxFileSize>200MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!--最多保留天数，如90天-->
+            <maxHistory>90</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 将配置应用到root目录下 -->
+    <root level="info">
+        <appender-ref ref="consoleLog"/>
+        <appender-ref ref="fileInfoLog"/>
+    </root>
+</configuration>
